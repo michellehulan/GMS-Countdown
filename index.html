@@ -2,38 +2,36 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Days Until Dec 2</title>
+<title>Countdown</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
   body {
-    font-family: Arial, sans-serif;
-    font-size: 40px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #003c69;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+    text-align: center;
   }
 </style>
 </head>
 <body>
-<div id="days"></div>
+<div id="countdown"></div>
 
 <script>
   function update() {
     const today = new Date();
-    const target = new Date(today.getFullYear(), 11, 2); // December = month 11
-
-    // If December 2 has passed this year, count toward next year's
+    const target = new Date(today.getFullYear(), 11, 2); // December = 11 (0-based)
     if (today > target) {
       target.setFullYear(target.getFullYear() + 1);
     }
-
     const diff = target - today;
     const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-
-    document.getElementById('days').textContent = days + " days";
+    document.getElementById('countdown').textContent = days + " more days until Gross Margin Scenario and Rate Changes are live!";
   }
-
   update();
   setInterval(update, 1000 * 60 * 60); // update every hour
 </script>
