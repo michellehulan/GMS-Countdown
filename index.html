@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Countdown</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
   body {
@@ -7,12 +12,32 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: auto;          /* Changed from 100vh to auto */
+    height: auto;
     margin: 0;
-    padding: 5px 10px;     /* Small padding for neatness */
-    white-space: nowrap;   /* Keep everything in one line */
+    padding: 5px 10px;
+    white-space: nowrap;
   }
   #countdown {
-    white-space: nowrap;   /* Prevent line breaks inside countdown */
+    white-space: nowrap;
   }
 </style>
+</head>
+<body>
+<div id="countdown"></div>
+
+<script>
+  function update() {
+    const today = new Date();
+    const target = new Date(today.getFullYear(), 11, 2); // December 2 (month 11, zero-based)
+    if (today > target) {
+      target.setFullYear(target.getFullYear() + 1);
+    }
+    const diff = target - today;
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    document.getElementById('countdown').textContent = days + " more days until Gross Margin Scenario and Rate Changes are live!";
+  }
+  update();
+  setInterval(update, 1000 * 60 * 60); // update every hour
+</script>
+</body>
+</html>
