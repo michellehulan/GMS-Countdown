@@ -12,13 +12,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: auto;
+    height: 100vh;
     margin: 0;
-    padding: 5px 10px;
-    white-space: nowrap;
-  }
-  #countdown {
-    white-space: nowrap;
+    text-align: center;
   }
 </style>
 </head>
@@ -28,7 +24,7 @@
 <script>
   function update() {
     const today = new Date();
-    const target = new Date(today.getFullYear(), 11, 2); // December 2 (month 11, zero-based)
+    const target = new Date(today.getFullYear(), 11, 2); // December = 11 (0-based)
     if (today > target) {
       target.setFullYear(target.getFullYear() + 1);
     }
