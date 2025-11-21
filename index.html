@@ -10,11 +10,15 @@
     font-size: 14px;
     color: #003c69;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;  /* left align horizontally */
+    align-items: center;          /* vertically center */
     height: 100vh;
     margin: 0;
-    text-align: center;
+    padding-left: 10px;           /* padding from left edge */
+    text-align: left;             /* left align text */
+  }
+  #countdown {
+    white-space: normal;          /* allow wrapping */
   }
 </style>
 </head>
@@ -30,11 +34,10 @@
     }
     const diff = target - today;
     const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-    document.getElementById('countdown').textContent = days + " more days until Gross Margin Scenario and Rate Sheet changes are live!";
+    document.getElementById('countdown').textContent = "Only " + days + " days until Gross Margin Scenario and Rate Changes are live!";
   }
   update();
   setInterval(update, 1000 * 60 * 60); // update every hour
 </script>
 </body>
 </html>
-
