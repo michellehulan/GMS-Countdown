@@ -7,36 +7,51 @@
 <style>
   body {
     font-family: Arial, sans-serif;
-    font-size: 40px;
+    font-size: 14px;
+    color: #003c69;
     display: flex;
     justify-content: center;
     align-items: center;
+    justify-content: flex-start;  /* left align horizontally */
+    align-items: center;          /* vertically center */
     height: 100vh;
     margin: 0;
+    text-align: center;
+    padding-left: 10px;           /* padding from left edge */
+    text-align: left;             /* left align text */
+  }
+  #countdown {
+    white-space: normal;          /* allow wrapping */
   }
 </style>
 </head>
 <body>
-<div id="days"></div>
+  <div id="countdown"></div>
 
 <script>
   function update() {
-    const today = new Date();
-    const year = today.getFullYear();
+    const now = new Date();
+    const y = now.getFullYear();
 
-    // Normalize to midnight for accuracy
-    const todayMidnight = new Date(year, today.getMonth(), today.getDate());
-    let target = new Date(year, 0, 13); // Jan = 0
+    // Compare at UTC midnight to avoid timezone/partial-day issues
+    const todayUTC = Date.UTC(y, now.getMonth(), now.getDate());
 
-    // If Jan 13 has passed, use next year
-    if (todayMidnight > target) {
-      target = new Date(year + 1, 0, 13);
+    // Target: Jan 13 at UTC midnight (Jan = 0)
+    let targetYear = y;
+    let targetUTC = Date.UTC(targetYear, 0, 13);
+
+    // If Jan 13 this year is before today, use next year
+    if (targetUTC < todayUTC) {
+      targetYear = y + 1;
+      targetUTC = Date.UTC(targetYear, 0, 13);
     }
 
-    const diff = target - todayMidnight;
-    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    const msPerDay = 86400000; // 1000 * 60 * 60 * 24
+    const days = Math.ceil((targetUTC - todayUTC) / msPerDay);
 
-    document.getElementById('days').textContent = days + " days";
+    // Single assignment, per your preferred phrasing
+    document.getElementById('countdown').textContent =
+      "Only " + days + " days until Gross Margin Scenario and Rate Changes are live!";
   }
 
   update();
