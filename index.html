@@ -13,17 +13,6 @@
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f9f9f9; /* Example background */
-    color: #003C69; /* Example text color */
-  }
-
-  #days {
-    padding: 20px 40px;
-    border-radius: 12px;
-    background: #ffffff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    text-align: center;
-    font-weight: bold;
   }
 </style>
 </head>
@@ -31,29 +20,27 @@
 <div id="days"></div>
 
 <script>
-  function updateCountdown() {
-    const now = new Date();
-    const y = now.getFullYear();
+  function update() {
+    const today = new Date();
+    const year = today.getFullYear();
 
-    // Normalize to UTC midnight for accuracy
-    const todayUTC = Date.UTC(y, now.getMonth(), now.getDate());
-    let targetYear = y;
-    let targetUTC = Date.UTC(targetYear, 0, 13); // Jan = 0
+    // Normalize to midnight for accuracy
+    const todayMidnight = new Date(year, today.getMonth(), today.getDate());
+    let target = new Date(year, 0, 13); // Jan = 0
 
-    if (targetUTC < todayUTC) {
-      targetYear = y + 1;
-      targetUTC = Date.UTC(targetYear, 0, 13);
+    // If Jan 13 has passed, use next year
+    if (todayMidnight > target) {
+      target = new Date(year + 1, 0, 13);
     }
 
-    const msPerDay = 86400000;
-    const days = Math.ceil((targetUTC - todayUTC) / msPerDay);
+    const diff = target - todayMidnight;
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
 
-    document.getElementById('days').textContent =
-      `${days} days until Jan 13, ${targetYear}`;
+    document.getElementById('days').textContent = days + " days";
   }
 
-  updateCountdown();
-  setInterval(updateCountdown, 1000 * 60 * 60 * 6);
+  update();
+  setInterval(update, 1000 * 60 * 60); // update every hour
 </script>
 </body>
 </html>
