@@ -22,27 +22,32 @@
 <script>
   function updateCountdown() {
     const now = new Date();
-    // Target: January 13 of this year
-    let target = new Date(now.getFullYear(), 0, 13); // Jan = 0
-    target.setHours(0, 0, 0, 0); // normalize to midnight
+    const y = now.getFullYear();
 
-    // If today is after Jan 13, use next year
-    if (now > target) {
-      target = new Date(now.getFullYear() + 1, 0, 13);
-      target.setHours(0, 0, 0, 0);
+    // Compute "today" as UTC midnight (prevents timezone/offset issues)
+    const todayUTC = Date.UTC(y, now.getMonth(), now.getDate());
+
+    // Jan = 0. Start with this year's Jan 13 at UTC midnight
+    let targetYear = y;
+    let targetUTC = Date.UTC(targetYear, 0, 13);
+
+    // If Jan 13 this year is before today, use next year
+    if (targetUTC < todayUTC) {
+      targetYear = y + 1;
+      targetUTC = Date.UTC(targetYear, 0, 13);
     }
 
-    // Normalize 'today' to midnight to avoid partial-day rounding
-    const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const diffMs = target - todayMidnight;
-    const days = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+    const msPerDay = 86400000; // 1000 * 60 * 60 * 24
+    const days = Math.ceil((targetUTC - todayUTC) / msPerDay);
 
+    // Render
     document.getElementById('days').textContent =
-      `${days} days until Jan 13`;
+      `${days} days until Jan 13, ${targetYear}`;
   }
 
   updateCountdown();
-  setInterval(updateCountdown, 1000 * 60 * 60 * 6); // update every 6 hours
+  // Recompute a few times per day (safe for long-lived pages)
+  setInterval(updateCountdown, 1000 * 60 * 60 * 6);
 </script>
 </body>
 </html>
