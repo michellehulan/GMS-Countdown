@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Days Until Dec 2</title>
+<title>Days Until Jan 13</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -21,9 +22,9 @@
 <script>
   function update() {
     const today = new Date();
-    const target = new Date(today.getFullYear(), 11, 2); // December = month 11
+    const target = new Date(today.getFullYear(), 0, 13); // January = month 0
 
-    // If December 2 has passed this year, count toward next year's
+    // If Jan 13 has passed this year, count toward next year's
     if (today > target) {
       target.setFullYear(target.getFullYear() + 1);
     }
