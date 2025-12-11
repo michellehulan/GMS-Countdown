@@ -1,43 +1,53 @@
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Countdown</title>
+<title>Days Until Jan 13</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
   body {
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    color: #003c69;
+    font-family: Arial, sans-serif;
+    font-size: 40px;
     display: flex;
-    justify-content: flex-start;  /* left align horizontally */
-    align-items: center;          /* vertically center */
+    justify-content: center;
+    align-items: center;
     height: 100vh;
     margin: 0;
-    padding-left: 10px;           /* padding from left edge */
-    text-align: left;             /* left align text */
-  }
-  #countdown {
-    white-space: normal;          /* allow wrapping */
   }
 </style>
 </head>
 <body>
-<div id="countdown"></div>
+<div id="days"></div>
 
 <script>
-  function update() {
-    const today = new Date();
-    const target = new Date(today.getFullYear(), 11, 2); // December = 11 (0-based)
-    if (today > target) {
-      target.setFullYear(target.getFullYear() + 1);
+  function updateCountdown() {
+    const now = new Date();
+    const y = now.getFullYear();
+
+    // Compute "today" as UTC midnight (prevents timezone/offset issues)
+    const todayUTC = Date.UTC(y, now.getMonth(), now.getDate());
+
+    // Jan = 0. Start with this year's Jan 13 at UTC midnight
+    let targetYear = y;
+    let targetUTC = Date.UTC(targetYear, 0, 13);
+
+    // If Jan 13 this year is before today, use next year
+    if (targetUTC < todayUTC) {
+      targetYear = y + 1;
+      targetUTC = Date.UTC(targetYear, 0, 13);
     }
-    const diff = target - today;
-    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-    document.getElementById('countdown').textContent = "Only " + days + " days until Gross Margin Scenario and Rate Changes are live!";
+
+    const msPerDay = 86400000; // 1000 * 60 * 60 * 24
+    const days = Math.ceil((targetUTC - todayUTC) / msPerDay);
+
+    // Render
+    document.getElementById('days').textContent =
+      `${days} days until Jan 13, ${targetYear}`;
   }
-  update();
-  setInterval(update, 1000 * 60 * 60); // update every hour
+
+  updateCountdown();
+  // Recompute a few times per day (safe for long-lived pages)
+  setInterval(updateCountdown, 1000 * 60 * 60 * 6);
 </script>
 </body>
 </html>
