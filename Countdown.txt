@@ -22,17 +22,17 @@
 <script>
   function update() {
     const today = new Date();
-    const target = new Date(today.getFullYear(), 0, 13); // January = month 0
+    let target = new Date(today.getFullYear(), 0, 13); // Jan = 0
 
-    // If Jan 13 has passed this year, count toward next year's
+    // If Jan 13 has already passed this year, use next year
     if (today > target) {
-      target.setFullYear(target.getFullYear() + 1);
+      target = new Date(today.getFullYear() + 1, 0, 13);
     }
 
     const diff = target - today;
     const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
 
-    document.getElementById('days').textContent = days + " days";
+    document.getElementById('days').textContent = days + " days until Jan 13";
   }
 
   update();
